@@ -1,5 +1,5 @@
 # Java-Wordle-Solver
-Solves the daily wordle with java and process of elimination with a text file.
+Solves the daily wordle with java using process of elimination with a five letter word text file.
 
 Very basic code, first time uploading on github so apologies for any errors or bugs involved.
 
