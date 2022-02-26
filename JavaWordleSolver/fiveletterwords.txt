@@ -481,7 +481,6 @@ bloat
 blobs
 block
 blocs
-bloke
 blond
 blood
 bloom
@@ -4464,7 +4463,6 @@ spier
 spies
 spiff
 spiky
-spill
 spilt
 spina
 spine
@@ -4961,7 +4959,6 @@ troop
 troth
 trots
 trout
-trove
 trows
 truce
 truck
@@ -5187,7 +5184,6 @@ vitam
 vitas
 vitro
 vivas
-vivid
 vivre
 vixen
 vizor

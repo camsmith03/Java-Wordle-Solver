@@ -1,4 +1,5 @@
 package newwordleproject;
+import java.util.ArrayList;
 
 /**
  * Letter class used to create letter objects containing 
@@ -11,7 +12,7 @@ package newwordleproject;
 public class Letter {
   private String letter;
   private String color;
-  private int position;
+  private ArrayList<Integer> cantPositions;
   
   /**
    * Constructor for the letter type
@@ -37,9 +38,9 @@ public class Letter {
    *            position of the yellow 
    *            letter in the word
    */
-  public Letter(String letter, int position) {
+  public Letter(String letter, ArrayList<Integer> cantPositions) {
     this.letter = letter;
-    this.position = position;
+    this.cantPositions = cantPositions;
   }
   
   /**
@@ -88,8 +89,8 @@ public class Letter {
    * 
    * @return position
    */
-  public int getPositon() {
-    return position;
+  public ArrayList<Integer> getCantPositons() {
+    return cantPositions;
   }
   
   /**
@@ -99,7 +100,7 @@ public class Letter {
    *            position of the yellow
    *            letter in the word
    */
-  public void setPostion(int position) {
-    this.position = position;
+  public void addCantPositions(int position) {
+    cantPositions.add(position);
   }
 }// end class

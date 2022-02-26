@@ -6,17 +6,18 @@ import java.util.Scanner;
  * Java Wordle Solver, Solves the daily wordle
  * using process of elimination and a list of 
  * known five letter words
+ * Current bug: cannot handle multiple letter
+ * words with different colors
  * 
  * @author Cameron Smith (camerons03)
  * @version 2022.02.22
  */
 public class WordleSolver {
-  static String selection = "";
-  static String secondSelection = "";
-  static ArrayList<Letter> letters = new ArrayList<>();
-  static WordleGuess wordleGuess;
-  static int iterate;
-  int num = 0;
+  private static String selection = "";
+  private static ArrayList<Letter> letters = new ArrayList<>();
+  private static ArrayList<String> wordList = new ArrayList<>();
+  private static WordleGuess wordleGuess;
+  private static int iterate;
   
   /**
    * main method that runs the main menu and 
@@ -26,11 +27,11 @@ public class WordleSolver {
    * @param args
    */
   public static void main(String[] args) {
-    iterate = 1;
+    iterate = 1; // checks to see which iteration we are on
     while(!selection.toLowerCase().equals("q")) {
       Scanner scan = new Scanner(System.in);
       mainMenu();
-      selection = scan.nextLine().replaceAll(" ", "");
+      selection = scan.nextLine().replaceAll(" ", ""); // user selection
       if (selection.toLowerCase().equals("e")) {
         inputLetters();
         scan.close();
@@ -44,7 +45,7 @@ public class WordleSolver {
         System.out.println("");
       }
     }
-    System.out.println("/nNow you have the word!");
+    System.out.println("\nNow you have the word!");
   }// end main
   
   /**
@@ -54,9 +55,9 @@ public class WordleSolver {
    */
   public static void inputLetters() {
     Scanner scan = new Scanner(System.in);
-    int num = 1;
-    String word = "";
-    String color = "";
+    int num = 1; // iterate while loop
+    String word = ""; // user entered letter
+    String color = ""; // user entered color
     while(num != 6) {
       System.out.println("Please enter letter #" + num + "\n");
       word = scan.nextLine().replaceAll(" ", "");
@@ -71,11 +72,16 @@ public class WordleSolver {
         System.out.println("Please enter a letter!\n");
       }
     }
-    wordleGuess = new WordleGuess(letters);
+    if (wordList.size() == 0) {
+      wordleGuess = new WordleGuess(letters);
+    } else {
+      wordleGuess = new WordleGuess(letters, wordList);
+    } 
     wordleGuess.narrower();
     wordleGuess.factorGrays();
     wordleGuess.factorGreens();
     wordleGuess.factorYellows();
+    wordList = wordleGuess.getWordList();
     System.out.println("These are the words you can use!");
     for (String i : wordleGuess.getWordList()) {
       System.out.println(i);
@@ -120,7 +126,7 @@ public class WordleSolver {
    *            correct user input returned
    */
   public static String findColor(String color, Scanner scan) {
-    boolean running = true;
+    boolean running = true; // while loop checker
     while (running) {
       color = scan.nextLine();
       if (color.toLowerCase().equals("gray") || 

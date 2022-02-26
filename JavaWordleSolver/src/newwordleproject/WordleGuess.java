@@ -13,27 +13,27 @@ import java.util.Scanner;
  * @version 2022.02.22
  */
 public class WordleGuess {
-  String [] currentWord = {"0", "0", "0", "0", "0"};
+  private String [] currentWord = {"0", "0", "0", "0", "0"};
   private ArrayList<Letter> letters;
   private ArrayList<String> wordList;
-  private ArrayList<String> newWordList;
   private ArrayList<String> cantLetters;
   private ArrayList<Letter> yellowLetters;
   
   /**
    * Constructor that initializes ArrayLists
-   * and turns the word file into an ArrayList
+   * and turns the word file into an ArrayList.
+   * Only runs on the first instance
    * 
    * @param letters
    *            stores the letters of type Letter
    *            with their color attributes
+   * @throws FileNotFoundException 
    */
   public WordleGuess(ArrayList<Letter> letters) {
     this.letters = letters;
     cantLetters = new ArrayList<>();
     wordList = new ArrayList<>();
-    newWordList = new ArrayList<>();
-    yellowLetters = new ArrayList<>();
+    yellowLetters = new ArrayList<>(); 
     try {
       File oldWords = new File("fiveletterwords.txt");
       Scanner scan = new Scanner(oldWords);
@@ -43,9 +43,24 @@ public class WordleGuess {
       scan.close();
     }// end try 
     catch (FileNotFoundException e) {
-      System.out.println("Can't find the file!");
-      e.printStackTrace();
+      System.out.println("Error finding file");
     }//end catch
+  }// end constructor
+  
+  /**
+   * Construction that runs on all instances
+   * except the first instance
+   * 
+   * @param letters
+   *            stores the letters of type Letter
+   *            with their color attributes
+   * @param prevWordList
+   */
+  public WordleGuess(ArrayList<Letter> letters, ArrayList<String> prevWordList) {
+    this.letters = letters;
+    cantLetters = new ArrayList<>();
+    wordList = prevWordList;
+    yellowLetters = new ArrayList<>(); 
   }// end constructor
   
   /**
@@ -54,23 +69,40 @@ public class WordleGuess {
    * adds the 'yellow' letters to the yellowLetters ArrayList
    */
   public void narrower() {
+    boolean dupYellow = false; // checks to see if there are multiple yellow instances
+    ArrayList<Integer> tempYellowPOS = new ArrayList<>();
     for (int i = 0; i < letters.size(); i++) {
-      if (letters.get(i).getColor().equals("gray")) {
-        cantLetters.add(letters.get(i).getLetter());
-      } else if (letters.get(i).getColor().equals("green")) {
-        currentWord[i] = letters.get(i).getLetter();
-      } else if (letters.get(i).getColor().equals("yellow")){
-        yellowLetters.add(new Letter(letters.get(i).getLetter(), i));
-      }
+        if (letters.get(i).getColor().equals("gray")) {
+            cantLetters.add(letters.get(i).getLetter());
+        } else if (letters.get(i).getColor().equals("green")) {
+            currentWord[i] = letters.get(i).getLetter();
+        } else if (letters.get(i).getColor().equals("yellow")){
+            for (int j = 0; j < yellowLetters.size(); j++){
+                if (yellowLetters.get(j).getLetter().equals(
+                        letters.get(i).getLetter())){
+                    yellowLetters.get(j).addCantPositions(i);       
+                    dupYellow = true;
+                }
+            }// end for
+            if (!dupYellow){
+                tempYellowPOS.add(i);
+                yellowLetters.add(new Letter(letters.get(i).
+                        getLetter(), tempYellowPOS));
+                tempYellowPOS.clear();
+            } else {
+                dupYellow = false;
+            }
+        }
     }// end for
-  }// end method
+}// end method
   
   /**
    * removes all words from the word list that contain any
    * gray letters.
    */
   public void factorGrays() {
-    boolean remove = false;
+    boolean remove = false; // boolean used to remove unwanted words
+    ArrayList<String> tempList = new ArrayList<>(); // temporary list
     for (int i = 0; i < wordList.size(); i++) {
       for (int j = 0; j < cantLetters.size(); j++) {
         if (wordList.get(i).contains(cantLetters.get(j))) {
@@ -78,11 +110,12 @@ public class WordleGuess {
         } 
       }// end for
       if (!remove) {
-        newWordList.add(wordList.get(i));
+        tempList.add(wordList.get(i));
       } else {
         remove = false;
       }
     }// end for
+    wordList = tempList; // replace current word list with tempList
   }// end method
   
   /**
@@ -90,24 +123,24 @@ public class WordleGuess {
    * in its corresponding position
    */
   public void factorGreens() {
-    ArrayList<String> tempList = new ArrayList<>();
-    boolean remove = false;
-    for (int i = 0; i < newWordList.size(); i++) {
+    boolean remove = false; // boolean used to remove unwanted words
+    ArrayList<String> tempList = new ArrayList<>(); // temporary list
+    for (int i = 0; i < wordList.size(); i++) {
       for (int j = 0; j < currentWord.length; j++) {
         if (!currentWord[j].equals("0")) {
-          if (!newWordList.get(i).substring(j, j+1)
+          if (!wordList.get(i).substring(j, j+1)
             .equals(currentWord[j])) {
             remove = true;
           }
         }
       }// end for
       if (!remove) {
-        tempList.add(newWordList.get(i));
+        tempList.add(wordList.get(i));
       } else {
         remove = false;
       }
     }// end for
-    newWordList = tempList;
+    wordList = tempList; // replace current word list with tempList
   }
   
   /**
@@ -116,47 +149,47 @@ public class WordleGuess {
    * contain the yellow letter.
    */
   public void factorYellows() {
-    int yPosition;
-    ArrayList<String> tempList = new ArrayList<>();
-    boolean remove = false;
-    for (int i = 0; i < newWordList.size(); i++) {
+    int yPosition; // variable set to position of the yellow letter
+    boolean remove = false; // boolean used to remove unwanted words
+    ArrayList<String> tempList = new ArrayList<>(); // temporary list
+    for (int i = 0; i < wordList.size(); i++) {
       for (int j = 0; j < yellowLetters.size(); j++) {
-        yPosition = yellowLetters.get(j).getPositon();
-        if (newWordList.get(i).contains(yellowLetters.get(j).
-          getLetter())){
-          if (yPosition != 5) {
-            if (newWordList.get(i).substring(yPosition, yPosition + 1)
-              .equals(yellowLetters.get(j).getLetter())) {
-              remove = true;
-            }
-          } else {
-            if (newWordList.get(i).substring(yPosition)
-              .equals(yellowLetters.get(j).getLetter())) {
-              remove = true;
+        for (int k = 0; k < yellowLetters.get(j).getCantPositons().size(); k++){
+          yPosition = yellowLetters.get(j).getCantPositons().get(k);
+          if (wordList.get(i).contains(yellowLetters.get(j).
+                 getLetter())){
+            if (yPosition != 5) {
+              if (wordList.get(i).substring(yPosition, yPosition + 1)
+                      .equals(yellowLetters.get(j).getLetter())) {
+                remove = true;
+              }
+            } else {
+              if (wordList.get(i).substring(yPosition)
+                      .equals(yellowLetters.get(j).getLetter())) {
+                remove = true;
+              }
             }
           }
-          
-        } else {
-          remove = true;
-        }
+        }// end for
       }// end for
       if (!remove) {
-        tempList.add(newWordList.get(i));
+        tempList.add(wordList.get(i));
       } else {
         remove = false;
       }
     }// end for
-    newWordList = tempList;
+    wordList = tempList; // replace current word list with tempList
+    // not working
   }// end method
   
   /**
    * Getter for newWordList
    * 
-   * @return newWordList
-   *             new list that contains possible
+   * @return wordList
+   *             list that contains possible
    *             words
    */
   public ArrayList<String> getWordList(){
-    return newWordList;
+    return wordList;
   }// end method
 }// end class
