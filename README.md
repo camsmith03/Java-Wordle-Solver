@@ -5,5 +5,8 @@ Very basic code, first time uploading on github so apologies for any errors or b
 Plans to improve UX are in the future, but as of right now, not much will change except 
 removing past wordles from the list.
 
+Current Bug:
+- Unknown error involving yellow letters
+
 Date: 2/26/2022
 Cameron Smith
