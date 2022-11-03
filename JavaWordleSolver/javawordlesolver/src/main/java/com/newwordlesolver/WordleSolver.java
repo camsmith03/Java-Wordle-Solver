@@ -3,13 +3,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Java Wordle Solver, Solves the daily wordle
- * using process of elimination and a list of 
- * known five letter words
- * Current bug: cannot handle multiple letter
- * words with different colors
+ * Java Wordle Solver, Solves the daily wordle using process of 
+ * elimination and a list of known five letter words. 
+ * Current bug: cannot handle multiple letter words with 
+ * different colors.
  * 
- * @author Cameron Smith (camerons03)
+ * @author Cameron Smith
  * @version 2022.02.22
  */
 public class WordleSolver {
@@ -20,9 +19,8 @@ public class WordleSolver {
   private static int iterate;
   
   /**
-   * main method that runs the main menu and 
-   * receives user data on whether they want to use
-   * the program.
+   * Main method that runs the main menu and receives user data 
+   * on whether they want to use the program.
    * 
    * @param args
    */
@@ -38,9 +36,8 @@ public class WordleSolver {
         selection = "q";
       } else if (selection.toLowerCase().equals("i")) {
         System.out.println(instructions());
-      }
-      else if (!selection.toLowerCase().equals("q") &&
-              !selection.toLowerCase().equals("i")){
+      } else if (!selection.toLowerCase().equals("q") &&
+          !selection.toLowerCase().equals("i")){
         System.out.println("Please enter 'e' or 'q'!");
         System.out.println("");
       }
@@ -49,9 +46,8 @@ public class WordleSolver {
   }// end main
   
   /**
-   * Method is used to receive letters from user
-   * while also running the WordleGuess class to 
-   * narrow down the results.
+   * Method is used to receive letters from user while also 
+   * running the WordleGuess class to narrow down the results.
    */
   public static void inputLetters() {
     Scanner scan = new Scanner(System.in);
@@ -67,8 +63,7 @@ public class WordleSolver {
         color = findColor(color, scan);
         letters.add(new Letter(word, color));
         num += 1;
-      }
-      else {
+      } else {
         System.out.println("Please enter a letter!\n");
       }
     }
@@ -99,10 +94,10 @@ public class WordleSolver {
   }// end method
   
   /**
-   * checks to see if a string is a number
-   * @param str
-   *            user input to see if it is a number
-   * @return boolean
+   * Checks to see if a string is a number.
+   * 
+   * @param  str  user input to see if it is a number
+   * @return      true if the string is a number, false otherwise.
    */
   public static boolean isNumeric(String str) {
     try {
@@ -114,24 +109,21 @@ public class WordleSolver {
   }// end method
   
   /**
-   * Checks to see if the user inputed color is one of the 
-   * three allowed colors
+   * Checks to see if the user inputted color is one of the three 
+   * allowed colors.
    * 
-   * @param color
-   *            sends in empty string to be replaced with user
-   *            input
-   * @param scan
-   *            sends in scanner object to get user input
-   * @return color
-   *            correct user input returned
+   * @param  color sends in empty string to be replaced with, 
+   *               user input.
+   * @param  scan  sends in scanner object to get user input
+   * @return       color based on user selection.
    */
   public static String findColor(String color, Scanner scan) {
     boolean running = true; // while loop checker
     while (running) {
       color = scan.nextLine();
       if (color.toLowerCase().equals("gray") || 
-        color.toLowerCase().equals("green") || 
-        color.toLowerCase().equals("yellow")) {
+          color.toLowerCase().equals("green") || 
+          color.toLowerCase().equals("yellow")) {
         running = false;
       } else {
         System.out.println("That is not a given color!\n");
@@ -139,14 +131,21 @@ public class WordleSolver {
     }
     return color;
   }// end method
-  
+
+ /**
+  * Registers the text to display in a tool tip.   The text 
+  * displays when the cursor lingers over the component.
+  *
+  * @param text  the string to display.  If the text is null, 
+  *              the tool tip is turned off for this component.
+  */
   /**
-   * method used to store instructions to reduce clutter
+   * Method used to store instructions to reduce clutter
    * 
-   * @return String
+   * @return      instructions for the user
    */
   public static String instructions() {
-    return "Hello user, welcome to Worldle Solver \n"+
+    return "Hello user, welcome to Wordle Solver \n"+
             "        Created by Cameron Smith\n"+
             "In order to use this solver you must first\n"+
             "guess your own word. We suggest a word with\n"+
@@ -159,8 +158,8 @@ public class WordleSolver {
   }// end method
   
   /**
-   * Method containing the main menu screen
-   * used to reduce clutter
+   * Method containing the main menu screen used to reduce 
+   * clutter.
    */
   public static void mainMenu() {
     System.out.println("Welcome to the Wordle Solver!"

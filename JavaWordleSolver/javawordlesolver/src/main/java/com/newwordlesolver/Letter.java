@@ -2,11 +2,10 @@ package com.newwordlesolver;
 import java.util.ArrayList;
 
 /**
- * Letter class used to create letter objects containing 
- * a character and color. Also used to set yellow letter
- * positions.
+ * Letter class used to create letter objects containing a 
+ * character and color. Also used to set yellow letter positions.
  * 
- * @author Cameron Smith (camerons03)
+ * @author Cameron Smith
  * @version 2022.02.22
  */
 public class Letter {
@@ -15,13 +14,10 @@ public class Letter {
   private ArrayList<Integer> cantPositions;
   
   /**
-   * Constructor for the letter type
+   * Constructor for the letter type.
    * 
-   * @param letter
-   *            character letter of type 
-   *            string
-   * @param color
-   *            color of the letter
+   * @param letter character letter of type string.
+   * @param color  color of the letter.
    */
   public Letter(String letter, String color) {
     this.letter = letter;
@@ -29,14 +25,10 @@ public class Letter {
   }
   
   /**
-   * Constructor for the yellow letters
+   * Constructor for the yellow letters.
    * 
-   * @param letter
-   *            character letter of type
-   *            string
-   * @param position
-   *            position of the yellow 
-   *            letter in the word
+   * @param letter   character letter of type string.
+   * @param position position of the yellow letter in the word.
    */
   public Letter(String letter, ArrayList<Integer> cantPositions) {
     this.letter = letter;
@@ -44,61 +36,54 @@ public class Letter {
   }
   
   /**
-   * Getter for the letter field
+   * Getter for the letter field.
    * 
-   * @return letter
+   * @return the letter field.
    */
   public String getLetter() {
     return letter;
   }
   
   /**
-   * Setter for the letter field
-   * Not used by program
+   * Setter for the letter field.
    * 
-   * @param letter
-   *            character letter of type
-   *            string
+   * @param letter letter to be set.
    */
   public void setLetter(String letter) {
     this.letter = letter;
   }
   
   /**
-   * Getter for the color field
+   * Getter for the color field.
    * 
-   * @return color
+   * @return the color field.
    */
   public String getColor() {
     return color;
   }
   
   /**
-   * Setter for the color field
-   * Not used by program
+   * Setter for the color field.
    * 
-   * @param color
-   *            color of the letter
+   * @param color color of the letter.
    */
   public void setColor(String color) {
     this.color = color;
   }
   
   /**
-   * Getter for the position field
+   * Getter for the position field.
    * 
-   * @return position
+   * @return positions of the yellow letters.
    */
-  public ArrayList<Integer> getCantPositons() {
+  public ArrayList<Integer> getCantPositions() {
     return cantPositions;
   }
   
   /**
-   * Setter for the position field
+   * Setter for the position field.
    * 
-   * @param position
-   *            position of the yellow
-   *            letter in the word
+   * @param position index of the yellow letter in the word.
    */
   public void addCantPositions(int position) {
     cantPositions.add(position);

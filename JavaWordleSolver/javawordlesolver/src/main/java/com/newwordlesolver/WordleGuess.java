@@ -5,11 +5,10 @@ import java.io.File;
 import java.util.Scanner;
 
 /**
- * WordleGuess class stores the vital algorithms
- * that access the word file and factor out words
- * that would not work
+ * WordleGuess class stores the vital algorithms that access the 
+ * word file and factor out words that would not work.
  * 
- * @author Cameron Smith (camerons03)
+ * @author Cameron Smith
  * @version 2022.02.22
  */
 public class WordleGuess {
@@ -20,14 +19,12 @@ public class WordleGuess {
   private ArrayList<Letter> yellowLetters;
   
   /**
-   * Constructor that initializes ArrayLists
-   * and turns the word file into an ArrayList.
-   * Only runs on the first instance
+   * Constructor that initializes ArrayLists and turns the word, 
+   * file into an ArrayList. Only runs on the first instance.
    * 
-   * @param letters
-   *            stores the letters of type Letter
-   *            with their color attributes
-   * @throws FileNotFoundException 
+   * @param letters stores the letters of type Letter with their, 
+   *                color attributes.
+   * @throws        FileNotFoundException 
    */
   public WordleGuess(ArrayList<Letter> letters) {
     this.letters = letters;
@@ -41,22 +38,21 @@ public class WordleGuess {
         wordList.add(scan.nextLine());
       }
       scan.close();
-    }// end try 
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       System.out.println("Error finding file");
-    }//end catch
+    }//end try/catch
   }// end constructor
   
   /**
-   * Construction that runs on all instances
-   * except the first instance
+   * Construction that runs on all instances except the first 
+   * instance.
    * 
-   * @param letters
-   *            stores the letters of type Letter
-   *            with their color attributes
-   * @param prevWordList
+   * @param letters      stores the letters of type Letter with 
+   *                     their, color attributes.
+   * @param prevWordList stores the previous word list.
    */
-  public WordleGuess(ArrayList<Letter> letters, ArrayList<String> prevWordList) {
+  public WordleGuess(ArrayList<Letter> letters, 
+      ArrayList<String> prevWordList) {
     this.letters = letters;
     cantLetters = new ArrayList<>();
     wordList = prevWordList;
@@ -69,7 +65,7 @@ public class WordleGuess {
    * adds the 'yellow' letters to the yellowLetters ArrayList
    */
   public void narrower() {
-    boolean dupYellow = false; // checks to see if there are multiple yellow instances
+    boolean dupYellow = false; 
     ArrayList<Integer> tempYellowPOS = new ArrayList<>();
     for (int i = 0; i < letters.size(); i++) {
         if (letters.get(i).getColor().equals("gray")) {
@@ -84,7 +80,7 @@ public class WordleGuess {
                     dupYellow = true;
                 }
             }// end for
-            if (!dupYellow){
+            if (!dupYellow) {
                 tempYellowPOS.add(i);
                 yellowLetters.add(new Letter(letters.get(i).
                         getLetter(), tempYellowPOS));
@@ -97,8 +93,8 @@ public class WordleGuess {
 }// end method
   
   /**
-   * removes all words from the word list that contain any
-   * gray letters.
+   * Removes all words from the word list that contain any gray 
+   * letters.
    */
   public void factorGrays() {
     boolean remove = false; // boolean used to remove unwanted words
@@ -120,7 +116,7 @@ public class WordleGuess {
   
   /**
    * removes all of the words that do not have the green letter
-   * in its corresponding position
+   * in its corresponding position.
    */
   public void factorGreens() {
     boolean remove = false; // boolean used to remove unwanted words
@@ -144,9 +140,9 @@ public class WordleGuess {
   }
   
   /**
-   * removes all words that are in the yellow position with
-   * the yellow letter. Also removes all words that do not 
-   * contain the yellow letter.
+   * removes all words that are in the yellow position with the 
+   * yellow letter. Also removes all words that do not contain 
+   * the yellow letter.
    */
   public void factorYellows() {
     int yPosition; // variable set to position of the yellow letter
@@ -154,18 +150,19 @@ public class WordleGuess {
     ArrayList<String> tempList = new ArrayList<>(); // temporary list
     for (int i = 0; i < wordList.size(); i++) {
       for (int j = 0; j < yellowLetters.size(); j++) {
-        for (int k = 0; k < yellowLetters.get(j).getCantPositons().size(); k++){
-          yPosition = yellowLetters.get(j).getCantPositons().get(k);
-          if (wordList.get(i).contains(yellowLetters.get(j).
-                 getLetter())){
+        for (int k = 0; k < yellowLetters.get(j).getCantPositions()
+            .size(); k++) {
+          yPosition = yellowLetters.get(j).getCantPositions().get(k);
+          if (wordList.get(i).contains(yellowLetters.get(j)
+              .getLetter())) {
             if (yPosition != 5) {
               if (wordList.get(i).substring(yPosition, yPosition + 1)
-                      .equals(yellowLetters.get(j).getLetter())) {
+                  .equals(yellowLetters.get(j).getLetter())) {
                 remove = true;
               }
             } else {
               if (wordList.get(i).substring(yPosition)
-                      .equals(yellowLetters.get(j).getLetter())) {
+                  .equals(yellowLetters.get(j).getLetter())) {
                 remove = true;
               }
             }
@@ -183,13 +180,11 @@ public class WordleGuess {
   }// end method
   
   /**
-   * Getter for newWordList
+   * Getter for newWordList.
    * 
-   * @return wordList
-   *             list that contains possible
-   *             words
+   * @return wordList with potential words.
    */
-  public ArrayList<String> getWordList(){
+  public ArrayList<String> getWordList() {
     return wordList;
   }// end method
 }// end class
