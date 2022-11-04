@@ -12,6 +12,19 @@ import java.util.Scanner;
  * @version 2022.02.22
  */
 public class WordleGuess {
+  /**
+   * Fields:
+   * 
+   * currentWord   Stores the current word known by the program.
+   *               Zeros are used to represent unknown letters.
+   * letters       Stores the five Letter objects of the user 
+   *               guessed word.
+   * wordList      Stores the list of words from the word file.
+   *               Updated as the program runs.
+   * cantLetters   List of all the gray letters in the word.
+   * yellowLetters Stores the yellow letters and their positions
+   *               in the word.
+   */
   private String [] currentWord = {"0", "0", "0", "0", "0"};
   private ArrayList<Letter> letters;
   private ArrayList<String> wordList;
@@ -97,6 +110,9 @@ public class WordleGuess {
    * letters.
    */
   public void factorGrays() {
+    // TODO: Check to see if it is also a yellow letter
+    // in the game if you have two of the same letter and 
+    // one is yellow then the other defaults to gray
     boolean remove = false; // boolean used to remove unwanted words
     ArrayList<String> tempList = new ArrayList<>(); // temporary list
     for (int i = 0; i < wordList.size(); i++) {
@@ -176,7 +192,7 @@ public class WordleGuess {
       }
     }// end for
     wordList = tempList; // replace current word list with tempList
-    // not working
+    // TODO: fix this method
   }// end method
   
   /**
@@ -187,4 +203,41 @@ public class WordleGuess {
   public ArrayList<String> getWordList() {
     return wordList;
   }// end method
+  
+  /**
+   * Getter for the current word. Used in testing.
+   * 
+   * @return currentWord array.
+   */
+  public String[] getCurrentWord() {
+    return currentWord;
+  }
+
+  /**
+   * Getter for the yellow letter. Used in testing.
+   * 
+   * @return yellowLetters ArrayList.
+   */
+  public ArrayList<Letter> getYellowLetters() {
+    return yellowLetters;
+  }
+
+  /**
+   * Getter for the gray letters. Used in testing.
+   * 
+   * @return grayLetters ArrayList.
+   */
+  public ArrayList<String> getCantLetters() {
+    return cantLetters;
+  }
+
+  /**
+   * Getter for the letters from user inputted word. Used in 
+   * testing.
+   * 
+   * @return letters ArrayList.
+   */
+  public ArrayList<Letter> getLetters() {
+    return letters;
+  }
 }// end class
