@@ -80,27 +80,32 @@ public class WordleGuess {
   public void narrower() {
     boolean dupYellow = false; 
     ArrayList<Integer> tempYellowPOS = new ArrayList<>();
+    
     for (int i = 0; i < letters.size(); i++) {
         if (letters.get(i).getColor().equals("gray")) {
             cantLetters.add(letters.get(i).getLetter());
         } else if (letters.get(i).getColor().equals("green")) {
             currentWord[i] = letters.get(i).getLetter();
         } else if (letters.get(i).getColor().equals("yellow")){
-            for (int j = 0; j < yellowLetters.size(); j++){
-                if (yellowLetters.get(j).getLetter().equals(
-                        letters.get(i).getLetter())){
-                    yellowLetters.get(j).addCantPositions(i);       
-                    dupYellow = true;
-                }
-            }// end for
-            if (!dupYellow) {
-                tempYellowPOS.add(i);
-                yellowLetters.add(new Letter(letters.get(i).
-                        getLetter(), tempYellowPOS));
-                tempYellowPOS.clear();
-            } else {
-                dupYellow = false;
-            }
+            // for (int j = 0; j < yellowLetters.size(); j++){
+            //     if (yellowLetters.get(j).getLetter().equals(
+            //             letters.get(i).getLetter())){
+            //         yellowLetters.get(j).addCantPositions(i);       
+            //         dupYellow = true;
+            //     }
+            // }// end for
+            // if (!dupYellow) {
+            //     tempYellowPOS.add(i);
+            //     yellowLetters.add(new Letter(letters.get(i).
+            //             getLetter(), tempYellowPOS));
+            //     tempYellowPOS.clear();
+            // } else {
+            //     dupYellow = false;
+            // }
+            // TODO: Fix this
+            yellowLetters.add(new Letter(letters.get(i).getLetter(), new ArrayList<Integer>()));
+            yellowLetters.get(yellowLetters.size() - 1).addCantPositions(i);
+            
         }
     }// end for
 }// end method
@@ -161,38 +166,24 @@ public class WordleGuess {
    * the yellow letter.
    */
   public void factorYellows() {
-    int yPosition; // variable set to position of the yellow letter
-    boolean remove = false; // boolean used to remove unwanted words
-    ArrayList<String> tempList = new ArrayList<>(); // temporary list
-    for (int i = 0; i < wordList.size(); i++) {
-      for (int j = 0; j < yellowLetters.size(); j++) {
-        for (int k = 0; k < yellowLetters.get(j).getCantPositions()
-            .size(); k++) {
-          yPosition = yellowLetters.get(j).getCantPositions().get(k);
-          if (wordList.get(i).contains(yellowLetters.get(j)
-              .getLetter())) {
-            if (yPosition != 5) {
-              if (wordList.get(i).substring(yPosition, yPosition + 1)
-                  .equals(yellowLetters.get(j).getLetter())) {
-                remove = true;
-              }
-            } else {
-              if (wordList.get(i).substring(yPosition)
-                  .equals(yellowLetters.get(j).getLetter())) {
-                remove = true;
-              }
-            }
-          }
-        }// end for
-      }// end for
-      if (!remove) {
-        tempList.add(wordList.get(i));
-      } else {
-        remove = false;
-      }
-    }// end for
-    wordList = tempList; // replace current word list with tempList
-    // TODO: fix this method
+    String[] regex = {"^0.{4}$", "^.0.{3}$", "^.{2}0.{2}$", 
+        "^.{3}0.$", "^.{4}0$"};
+    for (int i = 0; i < yellowLetters.size(); i++) {
+        ArrayList<Integer> yellowPositions = yellowLetters.get(i)
+            .getCantPositions();
+        final String letter = yellowLetters.get(i).getLetter();
+        int size = yellowPositions.size();
+        
+        for (int j = 0; j < yellowPositions.size(); j++) {
+          final int pos = j;
+          
+          wordList.removeIf(s -> s.matches(regex[yellowPositions.get(pos)]
+              .replace("0", letter)));
+          wordList.removeIf(s -> !s.contains(letter));
+        }
+    }
+    // wordList = tempList; // replace current word list with tempList
+    // REGEX work on this ^e.{4}$ => earth or e....
   }// end method
   
   /**

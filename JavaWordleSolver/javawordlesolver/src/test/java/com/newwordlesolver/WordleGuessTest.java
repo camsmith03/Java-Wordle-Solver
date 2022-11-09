@@ -170,6 +170,29 @@ public class WordleGuessTest {
     public static void main(String[] args) {
         // TODO test for printing here
         // System.out.println(testingEval.getWordList().toString());
+        ArrayList<Letter> testWord1 = new ArrayList<>();
+        testWord1.add(new Letter("e", "yellow"));
+        testWord1.add(new Letter("c", "yellow"));
+        testWord1.add(new Letter("s", "yellow"));
+        testWord1.add(new Letter("a", "yellow"));
+        testWord1.add(new Letter("z", "gray"));
+        
+        WordleGuess testingEval = new WordleGuess(testWord1);
+
+        testingEval.narrower();
+        testingEval.factorYellows();
+        ArrayList<String> newWordList = testingEval.getWordList();
+
+        
+        for (int i = 0; i < newWordList.size(); i++) {
+            System.out.println(newWordList.get(i));
+        }
+
+        // System.out.println(testingEval.getYellowLetters().toString());
+
+        // for (int i = 0; i < newWordList.size(); i++) {
+        //     System.out.println(newWordList.get(i));
+        // }
 
     }
 
