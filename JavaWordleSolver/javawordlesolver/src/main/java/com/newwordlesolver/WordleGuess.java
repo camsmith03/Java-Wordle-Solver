@@ -82,7 +82,7 @@ public class WordleGuess {
         if (letters.get(i).getColor().equals("gray")) {
             Letter tempYellow = new Letter(letters.get(i).getLetter(), 
                 "yellow");
-            Boolean inGreen = false;
+            boolean inGreen = false;
             if (!yellowLetters.contains(tempYellow)) {
               for (int j = 0; j < currentWord.length; j++) {
                 if (currentWord[j].equals(letters.get(i).getLetter())) {
@@ -103,7 +103,8 @@ public class WordleGuess {
               int index = yellowLetters.indexOf(letters.get(i));
               yellowLetters.get(index).addCantPositions(i);
             } else {
-              yellowLetters.add(new Letter(letters.get(i).getLetter(), new ArrayList<Integer>()));
+              yellowLetters.add(new Letter(letters.get(i).getLetter()
+                  , new ArrayList<Integer>()));
               yellowLetters.get(yellowLetters.size() - 1).addCantPositions(i);
             }
         }
