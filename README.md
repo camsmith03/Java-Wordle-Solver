@@ -1,12 +1,8 @@
 # Java-Wordle-Solver
 Solves the daily wordle with java using process of elimination with a five letter word text file.
 
-Very basic code, first time uploading on github so apologies for any errors or bugs involved.
-Plans to improve UX are in the future, but as of right now, not much will change except 
-removing past wordles from the list.
+This branch is specificially for testing purposes. Any working or improved code will eventually
+be merged with the master branch.
 
-Current Bug:
-- Unknown error involving yellow letters
-
-Date: 2/26/2022
+Date: 11/11/2022
 Cameron Smith
