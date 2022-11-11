@@ -77,35 +77,35 @@ public class WordleGuess {
    * adds the 'green' letters to currentWord array
    * adds the 'yellow' letters to the yellowLetters ArrayList
    */
-  public void narrower() {
-    boolean dupYellow = false; 
-    ArrayList<Integer> tempYellowPOS = new ArrayList<>();
-    
+  public void narrower() {    
     for (int i = 0; i < letters.size(); i++) {
         if (letters.get(i).getColor().equals("gray")) {
-            cantLetters.add(letters.get(i).getLetter());
+            Letter tempYellow = new Letter(letters.get(i).getLetter(), 
+                "yellow");
+            Boolean inGreen = false;
+            if (!yellowLetters.contains(tempYellow)) {
+              for (int j = 0; j < currentWord.length; j++) {
+                if (currentWord[j].equals(letters.get(i).getLetter())) {
+                  inGreen = true;
+                }
+              }
+              if (!inGreen) {
+                cantLetters.add(letters.get(i).getLetter());
+              }
+            }
         } else if (letters.get(i).getColor().equals("green")) {
-            currentWord[i] = letters.get(i).getLetter();
+          if (cantLetters.contains(letters.get(i).getLetter())) {
+            cantLetters.remove(letters.get(i).getLetter());
+          }
+          currentWord[i] = letters.get(i).getLetter();
         } else if (letters.get(i).getColor().equals("yellow")){
-            // for (int j = 0; j < yellowLetters.size(); j++){
-            //     if (yellowLetters.get(j).getLetter().equals(
-            //             letters.get(i).getLetter())){
-            //         yellowLetters.get(j).addCantPositions(i);       
-            //         dupYellow = true;
-            //     }
-            // }// end for
-            // if (!dupYellow) {
-            //     tempYellowPOS.add(i);
-            //     yellowLetters.add(new Letter(letters.get(i).
-            //             getLetter(), tempYellowPOS));
-            //     tempYellowPOS.clear();
-            // } else {
-            //     dupYellow = false;
-            // }
-            // TODO: Fix this
-            yellowLetters.add(new Letter(letters.get(i).getLetter(), new ArrayList<Integer>()));
-            yellowLetters.get(yellowLetters.size() - 1).addCantPositions(i);
-            
+            if (yellowLetters.contains(letters.get(i))){ 
+              int index = yellowLetters.indexOf(letters.get(i));
+              yellowLetters.get(index).addCantPositions(i);
+            } else {
+              yellowLetters.add(new Letter(letters.get(i).getLetter(), new ArrayList<Integer>()));
+              yellowLetters.get(yellowLetters.size() - 1).addCantPositions(i);
+            }
         }
     }// end for
 }// end method
@@ -115,7 +115,6 @@ public class WordleGuess {
    * letters.
    */
   public void factorGrays() {
-    // TODO: Check to see if it is also a yellow letter
     // in the game if you have two of the same letter and 
     // one is yellow then the other defaults to gray
     boolean remove = false; // boolean used to remove unwanted words
@@ -171,9 +170,7 @@ public class WordleGuess {
     for (int i = 0; i < yellowLetters.size(); i++) {
         ArrayList<Integer> yellowPositions = yellowLetters.get(i)
             .getCantPositions();
-        final String letter = yellowLetters.get(i).getLetter();
-        int size = yellowPositions.size();
-        
+        final String letter = yellowLetters.get(i).getLetter();        
         for (int j = 0; j < yellowPositions.size(); j++) {
           final int pos = j;
           
