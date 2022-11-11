@@ -25,6 +25,9 @@ public class WordleSolver {
    * @param args
    */
   public static void main(String[] args) {
+    // fix 1:
+    // it says you have the word after six rounds when it 
+    // should be if there is one word left in the list
     iterate = 1; // checks to see which iteration we are on
     while(!selection.toLowerCase().equals("q")) {
       Scanner scan = new Scanner(System.in);
@@ -73,8 +76,8 @@ public class WordleSolver {
       wordleGuess = new WordleGuess(letters, wordList);
     } 
     wordleGuess.narrower();
-    wordleGuess.factorGrays();
     wordleGuess.factorGreens();
+    wordleGuess.factorGrays();
     wordleGuess.factorYellows();
     wordList = wordleGuess.getWordList();
     System.out.println("These are the words you can use!");

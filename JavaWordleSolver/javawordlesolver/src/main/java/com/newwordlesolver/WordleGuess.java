@@ -94,9 +94,6 @@ public class WordleGuess {
               }
             }
         } else if (letters.get(i).getColor().equals("green")) {
-          if (cantLetters.contains(letters.get(i).getLetter())) {
-            cantLetters.remove(letters.get(i).getLetter());
-          }
           currentWord[i] = letters.get(i).getLetter();
         } else if (letters.get(i).getColor().equals("yellow")){
             if (yellowLetters.contains(letters.get(i))){ 
@@ -116,21 +113,29 @@ public class WordleGuess {
    * letters.
    */
   public void factorGrays() {
-    // in the game if you have two of the same letter and 
-    // one is yellow then the other defaults to gray
     boolean remove = false; // boolean used to remove unwanted words
     ArrayList<String> tempList = new ArrayList<>(); // temporary list
     for (int i = 0; i < wordList.size(); i++) {
       for (int j = 0; j < cantLetters.size(); j++) {
         if (wordList.get(i).contains(cantLetters.get(j))) {
-          remove = true;
+          // Checking to see if the gray letter is already in the
+          // current word in the specific index. This factors for
+          // if there is a gray letter then a green letter of the
+          // same value.
+          if (!currentWord[wordList.get(i).indexOf(cantLetters.get(j))]
+              .equals(cantLetters.get(j))) {
+            remove = true;
+          }    
+      
         } 
       }// end for
+
       if (!remove) {
         tempList.add(wordList.get(i));
       } else {
         remove = false;
       }
+
     }// end for
     wordList = tempList; // replace current word list with tempList
   }// end method
@@ -180,8 +185,6 @@ public class WordleGuess {
           wordList.removeIf(s -> !s.contains(letter));
         }
     }
-    // wordList = tempList; // replace current word list with tempList
-    // REGEX work on this ^e.{4}$ => earth or e....
   }// end method
   
   /**
