@@ -123,7 +123,6 @@ public class WordleGuess {
           // current word in the specific index. This factors for
           // if there is a gray letter then a green letter of the
           // same value.
-          // TODO: fix this for bug 4
           
           if (!currentWord[wordList.get(i).indexOf(cantLetters.get(j))]
               .equals(cantLetters.get(j))) {
@@ -134,8 +133,6 @@ public class WordleGuess {
               if (!s.equals(regex[greenPOS])) {
                 if (wordList.get(i).matches(s.replace("0", cantLetters.get(j)))) {
                   remove = true;
-                  // System.out.println("_______________________");
-                  // System.out.println(cantLetters.get(j));
                 }
               }
             }
