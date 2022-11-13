@@ -82,16 +82,15 @@ public class WordleGuess {
         if (letters.get(i).getColor().equals("gray")) {
             Letter tempYellow = new Letter(letters.get(i).getLetter(), 
                 "yellow");
-            boolean inGreen = false;
-            if (!yellowLetters.contains(tempYellow)) {
-              for (int j = 0; j < currentWord.length; j++) {
-                if (currentWord[j].equals(letters.get(i).getLetter())) {
-                  inGreen = true;
+            if (yellowLetters.contains(tempYellow)) {
+              for (int k = 0; k < yellowLetters.size(); k++) {
+                if (yellowLetters.get(k).getLetter().equals(
+                    letters.get(i).getLetter())) {
+                  yellowLetters.get(k).addCantPositions(i);
                 }
               }
-              if (!inGreen) {
-                cantLetters.add(letters.get(i).getLetter());
-              }
+            } else {
+              cantLetters.add(letters.get(i).getLetter());
             }
         } else if (letters.get(i).getColor().equals("green")) {
           currentWord[i] = letters.get(i).getLetter();
@@ -115,6 +114,8 @@ public class WordleGuess {
   public void factorGrays() {
     boolean remove = false; // boolean used to remove unwanted words
     ArrayList<String> tempList = new ArrayList<>(); // temporary list
+    String[] regex = {"^0.{4}$", "^.0.{3}$", "^.{2}0.{2}$", 
+        "^.{3}0.$", "^.{4}0$"};
     for (int i = 0; i < wordList.size(); i++) {
       for (int j = 0; j < cantLetters.size(); j++) {
         if (wordList.get(i).contains(cantLetters.get(j))) {
@@ -122,12 +123,26 @@ public class WordleGuess {
           // current word in the specific index. This factors for
           // if there is a gray letter then a green letter of the
           // same value.
+          // TODO: fix this for bug 4
+          
           if (!currentWord[wordList.get(i).indexOf(cantLetters.get(j))]
               .equals(cantLetters.get(j))) {
-            remove = true;
-          }    
-      
+            remove = true; 
+          } else {
+            int greenPOS = wordList.get(i).indexOf(cantLetters.get(j));
+            for (String s : regex) {
+              if (!s.equals(regex[greenPOS])) {
+                if (wordList.get(i).matches(s.replace("0", cantLetters.get(j)))) {
+                  remove = true;
+                  // System.out.println("_______________________");
+                  // System.out.println(cantLetters.get(j));
+                }
+              }
+            }
+
+          }
         } 
+        // System.out.println(cantLetters.get(j));
       }// end for
 
       if (!remove) {
@@ -173,18 +188,52 @@ public class WordleGuess {
   public void factorYellows() {
     String[] regex = {"^0.{4}$", "^.0.{3}$", "^.{2}0.{2}$", 
         "^.{3}0.$", "^.{4}0$"};
+    ArrayList<Integer> greenPositions = new ArrayList<>();
+    ArrayList<String> removeWords = new ArrayList<>();
+
     for (int i = 0; i < yellowLetters.size(); i++) {
-        ArrayList<Integer> yellowPositions = yellowLetters.get(i)
-            .getCantPositions();
-        final String letter = yellowLetters.get(i).getLetter();        
-        for (int j = 0; j < yellowPositions.size(); j++) {
-          final int pos = j;
-          
-          wordList.removeIf(s -> s.matches(regex[yellowPositions.get(pos)]
-              .replace("0", letter)));
-          wordList.removeIf(s -> !s.contains(letter));
+      ArrayList<Integer> yellowPositions = yellowLetters.get(i)
+          .getCantPositions();
+      final String letter = yellowLetters.get(i).getLetter();        
+      for (int j = 0; j < yellowPositions.size(); j++) {
+        final int pos = j;
+        
+        wordList.removeIf(s -> s.matches(regex[yellowPositions.get(pos)]
+            .replace("0", letter)));
+        wordList.removeIf(s -> !s.contains(letter));
+      }
+      
+      for (int k = 0; k < currentWord.length; k++) {
+        if (currentWord[k].equals(letter)) {
+          greenPositions.add(k);
         }
+      }
+      // Remove words where there is a green letter the same as the yellow
+      boolean remove = true;
+      if (!greenPositions.isEmpty()){
+        for (String word : wordList) {
+          for (Integer greenPOS : greenPositions) {
+            if (word.substring(0, greenPOS).contains(letter) || 
+                word.substring(greenPOS + 1).contains(letter)) {
+              remove = false;
+            }
+          }
+          if (remove) {
+            removeWords.add(word);
+          } else {
+            remove = true;
+          }
+        }
+        greenPositions.clear();
+      }
     }
+
+    for (String word : removeWords) {
+      wordList.remove(word);
+    }
+    removeWords.clear();
+    
+    
   }// end method
   
   /**

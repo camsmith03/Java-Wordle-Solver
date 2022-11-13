@@ -548,6 +548,7 @@ badly
 boots
 pilot
 sales
+salet
 swept
 lucky
 prize
