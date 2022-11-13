@@ -139,8 +139,6 @@ public class WordleGuessTest {
      */
     @Test 
     public void testFactorYellows() {
-        // TODO: finish this test
-
         ArrayList<Letter> testWord1 = new ArrayList<>();
         testWord1.add(new Letter("e", "yellow"));
         testWord1.add(new Letter("c", "yellow"));
@@ -159,18 +157,10 @@ public class WordleGuessTest {
             "chase", "caves", "sauce", "cease", "cages", "cares", "paces", 
             "laces", "cafes", "capes", "canes", "maces"};
 
-        // TODO: major error with factorYellows()
         for (int i = 0; i < yellowWords.length; i++) {
             assertEquals(yellowWords[i], testingEval.getWordList().get(i));
         }
         
 
     }
-
-    public static void main(String[] args) {
-        // TODO test for printing here
-        // System.out.println(testingEval.getWordList().toString());
-
-    }
-
 }

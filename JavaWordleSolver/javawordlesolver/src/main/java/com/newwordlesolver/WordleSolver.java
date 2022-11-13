@@ -10,6 +10,26 @@ import java.util.Scanner;
  * @version 2022.02.22
  */
 public class WordleSolver {
+  /**
+   * Fields:
+   * 
+   * letters          Stores the current word submitted by the 
+   *                  user as well as updating the colors of the 
+   *                  new letters.
+   * wordList         Stores the list of words from the word 
+   *                  file. Updated as the program runs.
+   * prevGreenLetters Stores the green letter indexes of the  
+   *                  previous word to prevent user from needing
+   *                  to specify the colors of them.
+   * wordleGuess      Instance of the WordleGuess class used to
+   *                  calculate the potential words.
+   * betterWordIndex  In the event the user's first guess is
+   *                  entirely gray, this will be used to provide
+   *                  a more accurate guess.
+   * iterate          Used to keep track of which run the current
+   *                  game is on out of 6.
+   * scan             Scanner used for user input.
+   */
   private static ArrayList<Letter> letters = new ArrayList<>();
   private static ArrayList<String> wordList = new ArrayList<>();
   private static ArrayList<Integer> prevGreenLetters = new ArrayList<>();
@@ -74,8 +94,9 @@ public class WordleSolver {
    */
   public static void inputLetters() {
     String word = "";
-    final String[] goodWords = {"salet", "crate", "crane", "soare", "roast", "phony"};
-    if (iterate == 1) {
+    final String[] goodWords = {"salet", "crate", "crane", "soare", "roast"
+        , "phony"}; // words known to be great guesses in wordle
+    if (iterate == 1) { // user's first guess
       while (word.length() != 5) {
         System.out.println("Please enter a five letter word:\n");
         word = scan.nextLine().replaceAll(" ", "");
@@ -96,6 +117,8 @@ public class WordleSolver {
       if (betterWordIndex == -1) {
         word = wordList.get(0);
       } else {
+        // if the user's guess had all gray letters it will
+        // choose a better guess based on known good words.
         word = goodWords[betterWordIndex];
       }
     }
@@ -105,27 +128,28 @@ public class WordleSolver {
     int colorNum = 1;
     boolean back = false;
     int prevGreenSize = prevGreenLetters.size();
-    for (int i = 0; i < word.length(); i++) {
-      if (!prevGreenLetters.contains(i)){
+    for (int i = 0; i < word.length(); i++) { // specifying colors of letters
+      if (!prevGreenLetters.contains(i)){ 
         System.out.println("\n(Green - 1, Yellow - 2, Gray - 3)");
         System.out.println("Please enter the number of the color for " 
             + word.substring(i, i + 1).toUpperCase() + ":\n");
         
         color = scan.nextLine().replaceAll(" ", "");
 
-        if (color.toLowerCase().equals("back")) {
+        if (color.toLowerCase().equals("back")) { // user wants to go back
           if (i - 1 < 0 || (prevGreenLetters.contains(i - 1) && 
                 prevGreenLetters.size() == prevGreenSize)) {
             System.out.println("You cannot go back\n");
           } else {
             if (prevGreenLetters.contains(i - 1)) {
+              // if the user is going back on a green letter
               prevGreenLetters.remove(prevGreenLetters.size() - 1);
             }
             i = i - 2;         
             back = true;
             letters.remove(letters.size() - 1);            
           }
-        } else if (color.toLowerCase().equals("exit")) {
+        } else if (color.toLowerCase().equals("exit")) { // user exits to menu
           wordList.clear();
           letters.clear();
           prevGreenLetters.clear();
@@ -165,8 +189,10 @@ public class WordleSolver {
           back = false;
         }
       } else {
-        System.out.println("\nGreen letter " + word.substring(i, i + 1).toUpperCase() 
-            + " was automatically added\n");
+        // System to prevent user from needing to enter color 
+        // for green letters
+        System.out.println("\nGreen letter " + word.substring(i, i + 1)
+            .toUpperCase() + " was automatically added\n");
         letters.add(new Letter(word.substring(i, i + 1), "green"));
       }
     }
@@ -183,7 +209,7 @@ public class WordleSolver {
 
     wordList = wordleGuess.getWordList();
 
-    if (wordList.size() == 1) {
+    if (wordList.size() == 1) { // Program has the correct word
       System.out.println("The word is " + wordList.get(0).toUpperCase());
       iterate = 5;
     } else {
@@ -193,12 +219,15 @@ public class WordleSolver {
         // word.
         for (int j = 0; j < goodWords.length; j++){
           if (wordList.contains(goodWords[j])){
-            System.out.println("\nTry this word: " + goodWords[j].toUpperCase());
+            System.out.println("\nTry this word: " + goodWords[j]
+                .toUpperCase());
             betterWordIndex = j;
             break;
           }
         }
         if (betterWordIndex == -1) {
+          // if there were no better words that fit with the 
+          // gray letters it will just suggest the next word.
           System.out.println("\nTry this word: " + wordList.get(0).toUpperCase() 
               + "\n");
         }
@@ -215,14 +244,13 @@ public class WordleSolver {
       letters.clear();
       inputLetters();
     }
-    
   }// end method
   
   /**
    * Checks to see if a string is a number.
    * 
    * @param  str  user input to see if it is a number
-   * @return      true if the string is a number, false otherwise.
+   * @return      true if the string is a number, false otherwise
    */
   public static boolean isNumeric(String str) {
     try {

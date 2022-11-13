@@ -46,6 +46,8 @@ public class WordleGuess {
     yellowLetters = new ArrayList<>(); 
     try {
       File oldWords = new File("fiveletterwords.txt");
+      // Credit to charlesreid1 for the file
+      // https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt
       Scanner scan = new Scanner(oldWords);
       while (scan.hasNextLine()) {
         wordList.add(scan.nextLine());
@@ -82,7 +84,8 @@ public class WordleGuess {
         if (letters.get(i).getColor().equals("gray")) {
             Letter tempYellow = new Letter(letters.get(i).getLetter(), 
                 "yellow");
-            if (yellowLetters.contains(tempYellow)) {
+            if (yellowLetters.contains(tempYellow)) { 
+              // if the gray letter is already a yellow letter
               for (int k = 0; k < yellowLetters.size(); k++) {
                 if (yellowLetters.get(k).getLetter().equals(
                     letters.get(i).getLetter())) {
@@ -96,6 +99,7 @@ public class WordleGuess {
           currentWord[i] = letters.get(i).getLetter();
         } else if (letters.get(i).getColor().equals("yellow")){
             if (yellowLetters.contains(letters.get(i))){ 
+              // if there is more than one yellow letter
               int index = yellowLetters.indexOf(letters.get(i));
               yellowLetters.get(index).addCantPositions(i);
             } else {
@@ -126,12 +130,17 @@ public class WordleGuess {
           
           if (!currentWord[wordList.get(i).indexOf(cantLetters.get(j))]
               .equals(cantLetters.get(j))) {
+            // if the word in the word list does not have the
+            // gray letter in the current word.
             remove = true; 
           } else {
             int greenPOS = wordList.get(i).indexOf(cantLetters.get(j));
             for (String s : regex) {
               if (!s.equals(regex[greenPOS])) {
-                if (wordList.get(i).matches(s.replace("0", cantLetters.get(j)))) {
+                // removes all words that have a green and gray 
+                // letter in the same word.
+                if (wordList.get(i).matches(s
+                      .replace("0", cantLetters.get(j)))) {
                   remove = true;
                 }
               }
@@ -139,7 +148,6 @@ public class WordleGuess {
 
           }
         } 
-        // System.out.println(cantLetters.get(j));
       }// end for
 
       if (!remove) {
@@ -194,12 +202,14 @@ public class WordleGuess {
       final String letter = yellowLetters.get(i).getLetter();        
       for (int j = 0; j < yellowPositions.size(); j++) {
         final int pos = j;
-        
+        // remove every word that has the yellow letter in the 
+        // given position while also containing the yellow letter
         wordList.removeIf(s -> s.matches(regex[yellowPositions.get(pos)]
             .replace("0", letter)));
         wordList.removeIf(s -> !s.contains(letter));
       }
-      
+      // checking to see if there are any green letters with the
+      // yellow ones.
       for (int k = 0; k < currentWord.length; k++) {
         if (currentWord[k].equals(letter)) {
           greenPositions.add(k);

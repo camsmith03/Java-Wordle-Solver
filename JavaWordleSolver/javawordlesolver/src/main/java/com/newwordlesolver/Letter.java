@@ -90,7 +90,8 @@ public class Letter {
   }
 
   /**
-   * Equals method for the letter class.
+   * Equals method for the letter class. Used to override the
+   * default equals method used by the contains method.
    * 
    * @return true if the letters are equal, false otherwise.
    */
