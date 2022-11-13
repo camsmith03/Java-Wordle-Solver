@@ -88,4 +88,26 @@ public class Letter {
   public void addCantPositions(int position) {
     cantPositions.add(position);
   }
+
+  /**
+   * Equals method for the letter class.
+   * 
+   * @return true if the letters are equal, false otherwise.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (this == obj) {
+      return true;
+    }
+    if (this.getClass().equals(obj.getClass())){
+      Letter newObj = (Letter) obj;
+      if (this.letter.equals(newObj.getLetter())) {
+        return true;
+      }
+    }
+    return false;
+  }
 }// end class
