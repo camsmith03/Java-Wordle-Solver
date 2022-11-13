@@ -32,6 +32,8 @@ public class WordleSolver {
       mainMenu();
       selection = scan.nextLine().replaceAll(" ", ""); // user selection
       if (selection.toLowerCase().equals("e")) {
+        System.out.println("Type 'exit' to quit to menu.");
+        System.out.println("Type 'back' if you made a mistake\n");
         inputLetters();
         break;
       } else if (selection.toLowerCase().equals("i")) {
@@ -272,10 +274,12 @@ public class WordleSolver {
             "        Created by Cameron Smith\n"+
             "In order to use this solver you must first\n"+
             "guess your own word. We suggest a word with\n"+
-            "many vowels such as EARTH or OATER. Then we \n"+
+            "many vowels such as SALET or CRANE. Then we \n"+
             "will ask you which letters are grayed out and \n"+
             "which letters are not. Then the program will \n"+
-            "take over from there.\n"+
+            "take over from there. To go back to the main\n"+
+            "menu type exit at any time and if you made\n" +
+            "a mistake you can go back by typing back.\n" +
             "Enjoy :)\n"+
             "-----------------------------------------------\n";
   }// end method
