@@ -54,7 +54,8 @@ public class WordleGuess {
       }
       scan.close();
     } catch (FileNotFoundException e) {
-      System.out.println("Error finding file");
+      System.out.println("Error finding file\n");
+      WordleSolver.main(null);
     }//end try/catch
   }// end constructor
   
